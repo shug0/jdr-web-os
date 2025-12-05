@@ -2,6 +2,9 @@
 
 Plateforme complète pour la gestion de sessions de jeu de rôle avec intégration Notion et système de proxies.
 
+<img width="1512" height="783" alt="image" src="https://github.com/user-attachments/assets/8163d741-e8a0-429a-8b3d-eae623f90d29" />
+
+
 ## 🏗️ Architecture
 
 Monorepo avec:
