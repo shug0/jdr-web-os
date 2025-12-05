@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnpm
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+
+# Production builds
+dist/
+build/
+
+# Environment variables
+.env*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store*
+Thumbs.db
+
+# Cache
+.turbo/
+.cache/
+
+# Testing
+coverage/
+.nyc_output
+
+# Misc
+*.tgz
+*.tar.gz
+.tmp/
+.temp/
+
+# Vercel
+.vercel
+
+# Logs
+*.log.git.backup

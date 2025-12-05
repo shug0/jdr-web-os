@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Scan only UI package components */
+@source "./";

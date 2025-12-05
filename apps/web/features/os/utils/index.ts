@@ -1,0 +1,6 @@
+export { appRegistry, registerApp, createApp } from './app-registry'
+export { getAppUrl, openExternalApp } from './app-urls'
+export { DEFAULT_APPS } from './default-apps'
+export { calculateWindowDimensions, getResponsiveSize, isMobileScreen, isDesktopScreen } from './window-positioning'
+export { calculateGridConfig, calculateIconPosition, generateIconPositions, generateDebugGridCells } from './grid-positioning'
+export { createIconZoneMapping, recalculateIconPositions, distributeIconsInZones, calculateZoneIndex, calculateRelativePosition, calculateAbsolutePosition } from './grid-zone-mapping'

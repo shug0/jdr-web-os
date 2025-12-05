@@ -1,0 +1,24 @@
+# Caddy reverse proxy configuration for JDR Coffee local development
+# Install: brew install caddy
+# Run: sudo caddy run --config Caddyfile
+
+{
+	# Use local CA for self-signed certificates
+	local_certs
+}
+
+jdr.local, web.jdr.local {
+	reverse_proxy localhost:3000
+}
+
+combien.jdr.local {
+	reverse_proxy localhost:3001
+}
+
+pnj.jdr.local {
+	reverse_proxy localhost:3002
+}
+
+admin.jdr.local {
+	reverse_proxy localhost:3003
+}
