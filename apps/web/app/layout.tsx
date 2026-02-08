@@ -5,7 +5,7 @@ export const metadata = {
   title: "JDR OS - Operating System pour Jeux de Rôle",
   description: "Interface OS-like pour les outils JDR Coffee",
   icons: {
-    icon: "/favicon.png",
+    icon: "/logo/cofe.ico",
   },
   generator: "Claude Code",
 };
