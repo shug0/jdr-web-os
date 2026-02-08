@@ -1,6 +1,6 @@
 // Export OS feature components
 export * from './desktop'
-export * from './windows'
+export * from './window'
 
 // Export OS hooks
 export * from './hooks'

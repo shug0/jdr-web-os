@@ -37,9 +37,7 @@ type OSStore = OSState & OSActions
 const initialState: OSState = {
   desktop: {
     wallpaper: '/wallpapers/default.jpg',
-    icons: [],
-    gridSize: 100,
-    snapToGrid: true
+    icons: []
   },
   windows: {
     instances: [],

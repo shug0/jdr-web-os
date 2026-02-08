@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import type { DesktopIcon } from '../schemas'
-import { useGridConfig } from '../hooks/use-grid-config'
 import { useOSStore } from '../stores/os-store'
 
 interface DesktopIconProps {
@@ -13,7 +12,6 @@ interface DesktopIconProps {
 }
 
 export function DesktopIconComponent({ icon, onDoubleClick, onMove }: DesktopIconProps) {
-  const gridConfig = useGridConfig()
   const debugMode = useOSStore(state => state.system.debugMode)
   const handleClick = () => {
     onDoubleClick() // Single click opens app
@@ -76,9 +74,7 @@ export function DesktopIconComponent({ icon, onDoubleClick, onMove }: DesktopIco
       )}
       style={{
         left: `${icon.position.x}px`,
-        top: `${icon.position.y}px`,
-        width: `${gridConfig.cellWidth}px`,
-        height: `${gridConfig.cellHeight}px`
+        top: `${icon.position.y}px`
       }}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -110,7 +106,7 @@ export function DesktopIconComponent({ icon, onDoubleClick, onMove }: DesktopIco
             "text-sm font-medium text-white text-center",
             "px-2 py-1.5",
             "bg-black/70 backdrop-blur-sm",
-            "rounded-full shadow-lg",
+            "rounded-md shadow-lg",
             "leading-tight max-w-full",
             debugMode && "border-2 border-yellow-500"
           )}

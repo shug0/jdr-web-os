@@ -7,10 +7,9 @@ import { Taskbar } from '@workspace/ui/taskbar'
 import { Desktop, WindowManager } from '@/features/os'
 import { useOSStore } from '@/features/os/stores/os-store'
 import { useAppRegistry } from '@/features/os/hooks/use-app-registry'
-import { useOSInitialization } from '@/features/os/hooks/use-os-initialization'
 import { useMobile } from '@/features/os/hooks/use-mobile'
-import { useGridResize } from '@/features/os/hooks/use-grid-resize'
 import { createAppOpener } from '@/features/os/utils/app-opener'
+import { DEFAULT_APPS } from '@/features/os/utils/default-apps'
 
 interface DesktopOSLayoutProps {
   children?: React.ReactNode
@@ -43,12 +42,6 @@ export function DesktopOSLayout({
 
   const { apps } = useAppRegistry()
   const isMobile = useMobile()
-  
-  // Initialize OS with default applications and desktop icons
-  useOSInitialization()
-  
-  // Handle grid resize
-  useGridResize()
 
   // Create app opener with mobile-aware logic
   const appOpener = createAppOpener({
@@ -56,6 +49,13 @@ export function DesktopOSLayout({
     onOpenInWindow: openApp
   })
 
+  // Register default apps with the OS store
+  useEffect(() => {
+    for (const app of DEFAULT_APPS) {
+      registerApp(app)
+    }
+  }, [registerApp])
+  
   // Register apps from registry with the OS store
   useEffect(() => {
     for (const app of apps) {

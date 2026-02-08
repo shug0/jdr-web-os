@@ -4,9 +4,10 @@ import { useRef, useState, useEffect } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import type { DesktopProps } from '../schemas'
 import { DesktopIconComponent } from './desktop-icon'
+import { IconGroup } from './icon-group'
 import { useWallpaperRotation } from '../hooks/use-wallpaper-rotation'
-import { generateDebugGridCells } from '../utils/grid-positioning'
 import { useOSStore } from '../stores/os-store'
+import { organizeIconsIntoGroups } from '../utils/icon-groups'
 
 export function Desktop({
   icons,
@@ -16,6 +17,9 @@ export function Desktop({
 }: DesktopProps) {
   const desktopRef = useRef<HTMLDivElement>(null)
   const debugMode = useOSStore(state => state.system.debugMode)
+  
+  // Organiser les icônes en groupes - version simplifiée
+  const { groups, aboutIcon } = organizeIconsIntoGroups()
   
   // Système de rotation des wallpapers (wallpaper du jour fixe)
   const { currentWallpaperUrl, isRotating, toggleRotation } = useWallpaperRotation({
@@ -30,15 +34,6 @@ export function Desktop({
   const [blendMode, setBlendMode] = useState<string>('overlay')
   const [showDebug, setShowDebug] = useState(false)
   
-  // Debug grid - uniquement côté client pour éviter l'hydratation mismatch
-  const [isClient, setIsClient] = useState(false)
-  const debugGridCells = (debugMode && isClient) ? generateDebugGridCells() : []
-  
-  // S'assurer qu'on est côté client
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
   // Coffee color palette
   const coffeeColors = [
     '#f7e9e3', // Crème claire
@@ -112,34 +107,107 @@ export function Desktop({
         {/* Desktop Content with top bar offset */}
         <div className="absolute top-10 left-0 w-full" style={{ height: 'calc(100vh - 2.5rem)' }}>
           
-          {/* Debug Grid Visualization */}
-          {debugMode && (
-            <div className="absolute inset-0 pointer-events-none z-10">
-              {debugGridCells.map((cell, index) => (
-                <div
-                  key={`debug-cell-${cell.x}-${cell.y}-${index}`}
-                  className="absolute border-2 border-green-500 opacity-30"
-                  style={{
-                    left: `${cell.x}px`,
-                    top: `${cell.y}px`,
-                    width: `${cell.width}px`,
-                    height: `${cell.height}px`
-                  }}
-                />
-              ))}
+          {/* Desktop Content avec layout CSS simple */}
+          <div className="w-full h-full p-3 sm:p-4 flex flex-col">
+            
+            {/* Section du haut : Apps JDR à gauche, Wikis à droite */}
+            <div className="flex flex-col lg:flex-row justify-between items-start gap-4 sm:gap-6 mb-4 sm:mb-6">
+              
+              {/* Apps JDR à gauche */}
+              <div className="flex-shrink-0">
+                {groups[0] && (
+                  <IconGroup
+                    key={groups[0].id}
+                    title={groups[0].title}
+                    icons={groups[0].icons}
+                    onIconDoubleClick={onIconDoubleClick}
+                    onIconMove={onIconMove}
+                  />
+                )}
+              </div>
+              
+              {/* Groupes Wiki à droite */}
+              <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 lg:gap-6">
+                {groups[1] && (
+                  <IconGroup
+                    key={groups[1].id}
+                    title={groups[1].title}
+                    icons={groups[1].icons}
+                    onIconDoubleClick={onIconDoubleClick}
+                    onIconMove={onIconMove}
+                  />
+                )}
+                {groups[2] && (
+                  <IconGroup
+                    key={groups[2].id}
+                    title={groups[2].title}
+                    icons={groups[2].icons}
+                    onIconDoubleClick={onIconDoubleClick}
+                    onIconMove={onIconMove}
+                  />
+                )}
+              </div>
+              
             </div>
-          )}
-          
-          {/* Desktop Icons */}
-          <div className="relative w-full h-full">
-        {icons.map((icon) => (
-          <DesktopIconComponent
-            key={icon.id}
-            icon={icon}
-            onDoubleClick={() => onIconDoubleClick(icon.appId)}
-            onMove={(position) => onIconMove(icon.id, position)}
-          />
-        ))}
+            
+            {/* Spacer pour pousser "À propos" en bas */}
+            <div className="flex-1" />
+            
+            {/* À propos en bas à gauche */}
+            <div className="self-start">
+              <button
+                className={cn(
+                  "cursor-pointer select-none bg-transparent",
+                  "flex flex-col items-center justify-start",
+                  "rounded-lg p-1",
+                  "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                  "hover:bg-white/10 transition-colors duration-200",
+                  "active:bg-white/20"
+                )}
+                onClick={() => onIconDoubleClick(aboutIcon.appId)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onIconDoubleClick(aboutIcon.appId)
+                  }
+                }}
+                aria-label={`Ouvrir ${aboutIcon.label}`}
+                type="button"
+              >
+                {/* Zone fixe pour l'image */}
+                <div className="mb-1 sm:mb-2">
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
+                    {aboutIcon.icon ? (
+                      <img
+                        src={aboutIcon.icon}
+                        alt=""
+                        className="drop-shadow-lg pixel-art rounded-md w-full h-full object-contain"
+                        style={{ 
+                          imageRendering: 'pixelated'
+                        }}
+                        draggable={false}
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <div className="bg-secondary rounded drop-shadow-lg flex items-center justify-center w-full h-full">
+                        <span className="text-xs sm:text-sm font-mono text-muted-foreground">APP</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Label */}
+                <div className={cn(
+                  "text-xs sm:text-sm font-medium text-white text-center",
+                  "px-1.5 py-0.5 sm:px-2 sm:py-1",
+                  "bg-black/50 backdrop-blur-sm",
+                  "rounded-md shadow-md",
+                  "leading-tight whitespace-nowrap"
+                )}>
+                  {aboutIcon.label}
+                </div>
+              </button>
+            </div>
           </div>
 
           {/* Wallpaper Credit */}

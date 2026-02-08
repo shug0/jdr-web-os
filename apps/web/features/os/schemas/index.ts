@@ -36,6 +36,7 @@ export const OSAppSchema = z.object({
   isResizable: z.boolean(),
   allowMultipleInstances: z.boolean(),
   category: z.enum(['tools', 'utilities', 'games', 'system']),
+  externalUrl: z.string().optional(), // URL externe pour les apps qui s'ouvrent dans un nouvel onglet
 })
 
 // Desktop schemas
@@ -45,6 +46,13 @@ export const DesktopIconSchema = z.object({
   position: WindowPositionSchema,
   label: z.string(),
   icon: z.string(),
+})
+
+export const IconGroupSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  position: WindowPositionSchema,
+  icons: z.array(DesktopIconSchema),
 })
 
 // Notification schemas
@@ -69,8 +77,6 @@ export const OSStateSchema = z.object({
   desktop: z.object({
     wallpaper: z.string(),
     icons: z.array(DesktopIconSchema),
-    gridSize: z.number(),
-    snapToGrid: z.boolean(),
   }),
   windows: z.object({
     instances: z.array(WindowInstanceSchema),
@@ -98,6 +104,7 @@ export type WindowSize = z.infer<typeof WindowSizeSchema>
 export type WindowInstance = z.infer<typeof WindowInstanceSchema>
 export type OSApp = z.infer<typeof OSAppSchema>
 export type DesktopIcon = z.infer<typeof DesktopIconSchema>
+export type IconGroup = z.infer<typeof IconGroupSchema>
 export type OSNotification = z.infer<typeof OSNotificationSchema>
 export type NotificationAction = z.infer<typeof NotificationActionSchema>
 export type OSState = z.infer<typeof OSStateSchema>
@@ -115,6 +122,7 @@ export interface WindowProps {
 
 export interface DesktopProps {
   icons: DesktopIcon[]
+  iconGroups?: IconGroup[]
   onIconDoubleClick: (appId: string) => void
   onIconMove: (iconId: string, position: WindowPosition) => void
   onContextMenu: (position: WindowPosition) => void
