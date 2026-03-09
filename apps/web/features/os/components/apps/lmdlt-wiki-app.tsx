@@ -6,7 +6,7 @@ export function LmdltWikiApp() {
   return (
     <ExternalLinkApp 
       title="Le Mythe de la Taverne" 
-      url="https://lmdlt.notion.site/" 
+      url="https://lmdlt.wiki.jdr.coffee/"
     />
   )
 }

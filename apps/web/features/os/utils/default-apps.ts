@@ -49,7 +49,7 @@ export const DEFAULT_APPS: OSApp[] = [
     isResizable: true,
     allowMultipleInstances: false,
     category: 'tools',
-    externalUrl: 'https://lmdlt.notion.site/'
+    externalUrl: 'https://lmdlt.wiki.jdr.coffee/'
   },
   {
     id: 'dc-wiki',
@@ -62,7 +62,7 @@ export const DEFAULT_APPS: OSApp[] = [
     isResizable: true,
     allowMultipleInstances: false,
     category: 'tools',
-    externalUrl: 'https://dc-wiki.notion.site/'
+    externalUrl: 'https://chatons.wiki.jdr.coffee/'
   },
   {
     id: 'jdr-universel-wiki',

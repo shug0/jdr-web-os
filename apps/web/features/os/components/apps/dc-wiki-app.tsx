@@ -6,7 +6,7 @@ export function DcWikiApp() {
   return (
     <ExternalLinkApp 
       title="Donjons & Chatons" 
-      url="https://dc-wiki.notion.site/" 
+      url="https://chatons.wiki.jdr.coffee/"
     />
   )
 }
